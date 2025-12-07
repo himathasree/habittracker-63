@@ -9,6 +9,7 @@ import HabitsPage from "./pages/HabitsPage";
 import CalendarPage from "./pages/CalendarPage";
 import NotFound from "./pages/NotFound";
 import Header from "./components/layout/Header";
+import AnimatedBackground from "./components/background/AnimatedBackground";
 
 const queryClient = new QueryClient();
 
@@ -19,7 +20,8 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <div className="min-h-screen bg-background">
+          <div className="min-h-screen bg-background/80 backdrop-blur-sm relative">
+            <AnimatedBackground />
             <Header />
             <Routes>
               <Route path="/" element={<Dashboard />} />
