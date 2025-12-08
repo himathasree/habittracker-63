@@ -42,8 +42,8 @@ export const useNotifications = () => {
   const sendNotification = useCallback((title: string, options?: NotificationOptions) => {
     if (permission === 'granted' && settings.enabled) {
       const notification = new Notification(title, {
-        icon: '/favicon.ico',
-        badge: '/favicon.ico',
+        icon: '/favicon.svg',
+        badge: '/favicon.svg',
         ...options,
       });
 
