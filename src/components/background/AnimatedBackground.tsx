@@ -1,62 +1,65 @@
 import { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Float, MeshDistortMaterial } from '@react-three/drei';
+import { Float, MeshDistortMaterial, Sphere } from '@react-three/drei';
 import * as THREE from 'three';
 
-const FloatingShape = ({ 
+const GlowingSphere = ({ 
   position, 
   scale, 
   speed, 
-  color 
+  color,
+  opacity = 0.08
 }: { 
   position: [number, number, number]; 
   scale: number; 
   speed: number; 
   color: string;
+  opacity?: number;
 }) => {
   const meshRef = useRef<THREE.Mesh>(null);
   
   useFrame((state) => {
     if (meshRef.current) {
-      meshRef.current.rotation.x = state.clock.elapsedTime * speed * 0.2;
-      meshRef.current.rotation.y = state.clock.elapsedTime * speed * 0.3;
+      meshRef.current.rotation.x = state.clock.elapsedTime * speed * 0.1;
+      meshRef.current.rotation.y = state.clock.elapsedTime * speed * 0.15;
     }
   });
 
   return (
-    <Float speed={speed} rotationIntensity={0.5} floatIntensity={1.5}>
+    <Float speed={speed * 0.5} rotationIntensity={0.2} floatIntensity={0.8}>
       <mesh ref={meshRef} position={position} scale={scale}>
-        <icosahedronGeometry args={[1, 2]} />
+        <sphereGeometry args={[1, 64, 64]} />
         <MeshDistortMaterial
           color={color}
           transparent
-          opacity={0.15}
-          distort={0.4}
-          speed={2}
-          roughness={0.2}
+          opacity={opacity}
+          distort={0.2}
+          speed={1}
+          roughness={0.1}
+          metalness={0.1}
         />
       </mesh>
     </Float>
   );
 };
 
-const ParticleField = () => {
+const SubtleParticles = () => {
   const pointsRef = useRef<THREE.Points>(null);
   
   const particles = useMemo(() => {
-    const positions = new Float32Array(200 * 3);
-    for (let i = 0; i < 200; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 20;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 20;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 10;
+    const positions = new Float32Array(100 * 3);
+    for (let i = 0; i < 100; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 25;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 25;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 15;
     }
     return positions;
   }, []);
 
   useFrame((state) => {
     if (pointsRef.current) {
-      pointsRef.current.rotation.y = state.clock.elapsedTime * 0.02;
-      pointsRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.05) * 0.1;
+      pointsRef.current.rotation.y = state.clock.elapsedTime * 0.01;
+      pointsRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.02) * 0.05;
     }
   });
 
@@ -65,35 +68,63 @@ const ParticleField = () => {
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          count={200}
+          count={100}
           array={particles}
           itemSize={3}
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.05}
-        color="#0ea5e9"
+        size={0.03}
+        color="#8b5cf6"
         transparent
-        opacity={0.6}
+        opacity={0.4}
         sizeAttenuation
       />
     </points>
   );
 };
 
+const GradientMesh = () => {
+  const meshRef = useRef<THREE.Mesh>(null);
+
+  useFrame((state) => {
+    if (meshRef.current) {
+      meshRef.current.rotation.z = state.clock.elapsedTime * 0.02;
+    }
+  });
+
+  return (
+    <mesh ref={meshRef} position={[0, 0, -10]} scale={15}>
+      <planeGeometry args={[2, 2, 32, 32]} />
+      <meshBasicMaterial
+        color="#7c3aed"
+        transparent
+        opacity={0.03}
+      />
+    </mesh>
+  );
+};
+
 const Scene = () => {
   return (
     <>
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[10, 10, 5]} intensity={0.5} />
+      <ambientLight intensity={0.3} />
+      <directionalLight position={[10, 10, 5]} intensity={0.2} />
       
-      <FloatingShape position={[-4, 2, -3]} scale={2.5} speed={1.2} color="#0ea5e9" />
-      <FloatingShape position={[4, -2, -4]} scale={2} speed={0.8} color="#06b6d4" />
-      <FloatingShape position={[0, 3, -5]} scale={1.8} speed={1} color="#0284c7" />
-      <FloatingShape position={[-3, -3, -2]} scale={1.5} speed={1.5} color="#22d3d1" />
-      <FloatingShape position={[5, 1, -6]} scale={2.2} speed={0.6} color="#0891b2" />
+      {/* Large subtle spheres for depth */}
+      <GlowingSphere position={[-5, 3, -8]} scale={4} speed={0.3} color="#8b5cf6" opacity={0.05} />
+      <GlowingSphere position={[6, -2, -10]} scale={5} speed={0.2} color="#06b6d4" opacity={0.04} />
+      <GlowingSphere position={[0, 4, -12]} scale={3.5} speed={0.25} color="#a855f7" opacity={0.05} />
       
-      <ParticleField />
+      {/* Medium accent spheres */}
+      <GlowingSphere position={[-4, -3, -6]} scale={2} speed={0.4} color="#0ea5e9" opacity={0.06} />
+      <GlowingSphere position={[5, 2, -7]} scale={2.5} speed={0.35} color="#7c3aed" opacity={0.05} />
+      
+      {/* Subtle particle field */}
+      <SubtleParticles />
+      
+      {/* Background gradient mesh */}
+      <GradientMesh />
     </>
   );
 };
@@ -101,14 +132,17 @@ const Scene = () => {
 const AnimatedBackground = () => {
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-secondary/30" />
+      <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted/20" />
       <Canvas
-        camera={{ position: [0, 0, 8], fov: 60 }}
+        camera={{ position: [0, 0, 10], fov: 50 }}
         style={{ background: 'transparent' }}
         gl={{ alpha: true, antialias: true }}
+        dpr={[1, 1.5]}
       >
         <Scene />
       </Canvas>
+      {/* Overlay gradient for extra polish */}
+      <div className="absolute inset-0 bg-gradient-to-t from-background/50 via-transparent to-transparent pointer-events-none" />
     </div>
   );
 };
