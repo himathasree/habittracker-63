@@ -2,7 +2,9 @@
 
 ## Project info
 
-**URL**: 
+**URL**: https://peaceful-trifle-266828.netlify.app/
+
+My HabitTracker Web App is live please check out in teh above link
 
 ## Project Description
 
