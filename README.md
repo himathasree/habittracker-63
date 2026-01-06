@@ -3,7 +3,8 @@
 ## Project info
 
 **URL**: 
-## Proejct Description
+
+## Project Description
 
 Many people struggle to maintain regular daily routines because of hectic schedules, diversions, and unstructured routines, which frequently keeps them from reaching their personal and professional objectives. By offering an interactive platform for tracking, evaluating, and improving habits, the Habit Tracker Web App tackles this issue. Users can track completion over the previous 30 days, add, modify, and remove daily or weekly habits, and see performance trends. The application provides users with clear insights into their consistency and progress by calculating important data like average completion, current streak, and longest streak. Monitoring is made visually interesting and inspiring with interactive charts made using Chart.js that show daily completion, trend lines, and overall habit completion percentages. JSON-formatted habit data can be exported and imported by users. The application provides users with clear insights into their consistency and progress by calculating important metrics such as average completion, current streak, and longest streak. Monitoring is made visually appealing and inspiring with interactive charts made using Chart.js that show daily completion, trend lines, and overall habit completion percentages. While Local Storage offers quick, offline access without requiring subscriptions or accounts, users can export and import habit data in JSON format, guaranteeing that progress is backed up and readily restored. The application is lightweight, responsive, and simple to use because it was created solely with front-end technologies, including HTML5, CSS3, JavaScript, and Chart.js. The dashboard helps users find areas for development and stay motivated by providing a clear picture of habits, streaks, and performance indicators. The app promotes self-control, productivity, and personal development by bridging the gap between habit intention and action. 
 
@@ -14,7 +15,7 @@ There are several ways of editing your application.
 
 **Use your preferred IDE**
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+If you want to work locally using your own IDE, you can clone this repo and push changes.
 
 The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
